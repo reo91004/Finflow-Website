@@ -2,12 +2,18 @@
 
 import { Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useRequireAuth } from "@/hooks/use-require-auth";
 
 function AnalysisContent() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
+	const { user, loading } = useRequireAuth();
 
 	useEffect(() => {
+		if (loading || !user) {
+			return;
+		}
+
 		// URL 파라미터를 loading 페이지로 전달
 		const params = new URLSearchParams();
 		
@@ -39,7 +45,19 @@ function AnalysisContent() {
 		
 		// loading 페이지로 리다이렉트
 		router.replace(`/analysis/loading?${params.toString()}`);
-	}, [router, searchParams]);
+	}, [router, searchParams, loading, user]);
+
+	if (loading) {
+		return (
+			<div className="fixed inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
+				<div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600"></div>
+			</div>
+		);
+	}
+
+	if (!user) {
+		return null;
+	}
 
 	return (
 		<div className="fixed inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">

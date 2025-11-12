@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent } from "@/components/ui/card";
 import { apiCallWithRetry } from "@/lib/config";
 import { AnalysisMode } from "@/lib/types";
+import { useRequireAuth } from "@/hooks/use-require-auth";
 
 // 분석 단계 정의 (실제 API 호출과 연동)
 const analysisSteps = [
@@ -72,6 +73,7 @@ const analysisSteps = [
 function AnalysisLoadingContent() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
+	const { user, loading } = useRequireAuth();
 	const [currentStep, setCurrentStep] = useState(0);
 	const [progress, setProgress] = useState(0);
 	const [isCompleted, setIsCompleted] = useState(false);
@@ -158,8 +160,12 @@ function AnalysisLoadingContent() {
 	};
 
 	useEffect(() => {
+		if (loading || !user) {
+			return;
+		}
 		runAnalysis();
-	}, []);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [loading, user]);
 
 	const runAnalysis = async () => {
 		let stepIndex = 0;
@@ -267,6 +273,18 @@ function AnalysisLoadingContent() {
 		setIsCompleted(false);
 		runAnalysis();
 	};
+
+	if (loading) {
+		return (
+			<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
+				<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
+			</div>
+		);
+	}
+
+	if (!user) {
+		return null;
+	}
 
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900 flex items-center justify-center p-4 overflow-hidden">

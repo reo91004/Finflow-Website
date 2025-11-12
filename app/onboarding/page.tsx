@@ -11,8 +11,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useRequireAuth } from "@/hooks/use-require-auth";
 
 export default function OnboardingPage() {
+	const { user, loading } = useRequireAuth();
 	const [step, setStep] = useState(1);
 	const [formData, setFormData] = useState({
 		investmentAmount: "",
@@ -20,6 +22,18 @@ export default function OnboardingPage() {
 		riskTolerance: "",
 	});
 	const router = useRouter();
+
+	if (loading) {
+		return (
+			<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900">
+				<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
+			</div>
+		);
+	}
+
+	if (!user) {
+		return null;
+	}
 
 	const handleNext = () => {
 		if (step < 3) {
@@ -256,7 +270,7 @@ export default function OnboardingPage() {
 								<Button
 									onClick={handleNext}
 									disabled={!isStepValid()}
-									className="flex-1 h-12 rounded-2xl bg-blue-600 hover:bg-blue-700"
+									className="flex-1 h-12 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white"
 								>
 									{step === 3 ? "완료" : "다음"}
 									{step < 3 && <ArrowRight className="size-4 ml-2" />}

@@ -1,0 +1,26 @@
+{
+	"timestamp": "2025-10-16T10:29:07.693597+00:00",
+	"total_return": 0.8973648015356059,
+	"annualized_return": 0.174396511648935,
+	"volatility": 0.1474995672464711,
+	"sharpe_ratio": 1.0284097525722764,
+	"sortino_ratio": 1.4612400909851435,
+	"max_drawdown": -0.21361936700840395,
+	"cvar_5": -0.021288559343393992,
+	"final_value": 1897364.801535606,
+	"steps": 1004,
+	"crisis_regime_pct": 0.8027888446215139,
+	"crisis_activation_rate": 0.0,
+	"avg_cash_weight": 7.522910262907859e-8,
+	"median_cash_weight": 2.388089032567001e-10,
+	"cash_weight_min": 6.291961818637347e-11,
+	"cash_weight_max": 7.09893244459395e-7,
+	"avg_turnover_executed": 0.000837420235911229,
+	"avg_turnover_target": 0.0008381095706206978,
+	"files": {
+		"holdings_csv": "holdings_timeseries.csv",
+		"trades_csv": "trades.csv"
+	},
+	"period_start": "2021-01-05",
+	"period_end": "2024-12-30"
+}
